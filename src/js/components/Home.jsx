@@ -6,7 +6,17 @@ let nextId = 0;
 const Home = () => {
 	const [task, setTask] = useState("")
 	const [tasks, setTasks] = useState([]);
-
+	const handleKeypress = e => { 
+		if(task === "") alert("Cannot add an empty task");
+		else if (e.keyCode === 13) {						
+			setTasks(
+			[
+				...tasks,
+				{ id: nextId++, name: task }
+			]);
+			setTask("");}
+			
+		};
 	return (
 		<div className="d-flex justify-content-center">
 			<div className="text-center taskpad m-5 card p-2">
@@ -24,20 +34,7 @@ const Home = () => {
 				</div>
 				<h1 className="mt-3 fw-bold mb-0">To-do</h1>
 				<div className="row p-3">
-					<input className="col-9" label="What the dog doin" type="text" value={task} onChange={e => setTask(e.target.value)} />
-					<button className="col ms-2 btn btn-info fw-bold text-light" onClick={() => {
-						if(task === "") alert("Cannot add an empty task");
-						else {
-						setTasks(
-						[
-							...tasks,
-							{ id: nextId++, name: task }
-						]);
-						setTask("");
-					}
-					}}>
-						Add
-					</button>
+					<input className="col" label="What the dog doin" type="text" value={task} onChange={e => setTask(e.target.value)} onKeyUp={handleKeypress}/>
 				</div>
 				<div className="border-bottom p-1 mb-3" />
 				<div className="tasks">
