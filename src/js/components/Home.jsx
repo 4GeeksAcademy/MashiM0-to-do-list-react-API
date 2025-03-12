@@ -6,7 +6,6 @@ let nextId = 0;
 const Home = () => {
 	const [task, setTask] = useState("")
 	const [tasks, setTasks] = useState([]);
-	const [style, setStyle] = useState({display: 'none'});
 
 	return (
 		<div className="d-flex justify-content-center">
@@ -27,10 +26,15 @@ const Home = () => {
 				<div className="row p-3">
 					<input className="col-9" label="What the dog doin" type="text" value={task} onChange={e => setTask(e.target.value)} />
 					<button className="col ms-2 btn btn-info fw-bold text-light" onClick={() => {
-						setTasks([
+						if(task === "") alert("Cannot add an empty task");
+						else {
+						setTasks(
+						[
 							...tasks,
 							{ id: nextId++, name: task }
 						]);
+						setTask("");
+					}
 					}}>
 						Add
 					</button>
@@ -39,15 +43,9 @@ const Home = () => {
 				<div className="tasks">
 					<ul className="list-group p-1">
 						{tasks.map(x => (
-							<li className="list-group-item d-flex justify-content-between" key={x.id} style={{height:"56px"}} onMouseEnter={e => {
-								setStyle({display: 'block'});
-							}}
-							onMouseLeave={e => {
-								setStyle({display: 'none'})
-							}}
-					   >
+							<li className="list-group-item d-flex justify-content-between" key={x.id} style={{ height: "56px" }}>
 								<p className="text-primary-emphasis my-auto">{x.name}</p>
-												<button className="btn btn-danger" style={style} onClick={() => {
+								<button className="btn btn-danger" style={{visibility:"hidden"}} onClick={() => {
 									setTasks(
 										tasks.filter(a =>
 											a.id !== x.id
@@ -57,7 +55,7 @@ const Home = () => {
 									X
 								</button>
 							</li>
-							
+
 						))}
 					</ul>
 					<div className="border-bottom p-1 mb-2" />
